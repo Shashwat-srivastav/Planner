@@ -58,6 +58,22 @@ class Subjects extends GetxController {
     sl[i].curr.value++;
   }
 
+  delete(i) {
+    sl.removeAt(i);
+  }
+
+  reset(i) {
+    sl[i].curr.value = 0;
+    sl[i].tot.value = 0;
+  }
+
+  classneeded(i) {
+    var num = sl[i].curr.value - (0.5 * sl[i].tot.value);
+    var det = (0.5);
+
+    return num / det > 0 ? 'good' : (num / det) * -1 + 1;
+  }
+
   removeSubject(i) {
     sl.removeAt(i);
   }

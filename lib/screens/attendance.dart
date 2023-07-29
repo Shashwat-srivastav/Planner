@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_glow/flutter_glow.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:planner/Controllers/todo.dart';
@@ -37,6 +38,8 @@ class _AttendancePageState extends State<AttendancePage> {
               content: Column(
                 children: [
                   TextField(
+                    decoration:
+                        InputDecoration(label: "Subject Name".text.make()),
                     onChanged: (v) {
                       name = v;
                     },
@@ -68,357 +71,440 @@ class _AttendancePageState extends State<AttendancePage> {
         ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Text('Attendance',
-                          textScaleFactor: 2,
-                          style: GoogleFonts.sacramento(fontSize: 40))
-                      .pLTRB(
-                          MediaQuery.of(context).size.height * 0.035,
-                          MediaQuery.of(context).size.height * 0.06,
-                          MediaQuery.of(context).size.height * 0.02,
-                          0),
-                  Row(
-                    children: [
-                      days[dt.weekday - 1].text.headline5(context).make().p(10),
-                      (dt.day.toString() +
-                              '-' +
-                              dt.month.toString() +
-                              '-' +
-                              dt.year.toString())
-                          .text
-                          .headline5(context)
-                          .make()
-                    ],
-                  ).pLTRB(
-                      MediaQuery.of(context).size.height * 0.13,
-                      MediaQuery.of(context).size.height * 0.2,
-                      MediaQuery.of(context).size.height * 0.13,
-                      0),
+          child: Container(
+            color: Color.fromARGB(255, 178, 222, 232).withOpacity(0.3),
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Text('Attendance',
+                            textScaleFactor: 2,
+                            style: GoogleFonts.sacramento(fontSize: 40))
+                        .pLTRB(
+                            MediaQuery.of(context).size.height * 0.035,
+                            MediaQuery.of(context).size.height * 0.06,
+                            MediaQuery.of(context).size.height * 0.02,
+                            0),
+                    Row(
+                      children: [
+                        days[dt.weekday - 1]
+                            .text
+                            .headline5(context)
+                            .make()
+                            .p(10),
+                        (dt.day.toString() +
+                                '-' +
+                                dt.month.toString() +
+                                '-' +
+                                dt.year.toString())
+                            .text
+                            .headline5(context)
+                            .make()
+                      ],
+                    ).pLTRB(
+                        MediaQuery.of(context).size.height * 0.13,
+                        MediaQuery.of(context).size.height * 0.2,
+                        MediaQuery.of(context).size.height * 0.13,
+                        0),
 
-                  ///---------------------------------------------main body of the page--------------------------------
-                  Container(
-                    height: MediaQuery.of(context).size.height * 3,
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 238, 246, 217),
-                              Color.fromARGB(255, 215, 232, 215)
-                            ],
-                            end: Alignment.topLeft,
-                            begin: Alignment.bottomRight),
-                        color: Colors.white),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white),
-                                    color: Color.fromARGB(255, 164, 218, 230)
-                                        .withOpacity(0.6),
-                                    borderRadius: BorderRadius.circular(20)
-                                    // gradient: LinearGradient(colors: [])
+                    ///---------------------------------------------main body of the page--------------------------------
+                    Container(
+                      height: MediaQuery.of(context).size.height * 2,
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 2),
+                          borderRadius: BorderRadius.circular(30),
+                          gradient: LinearGradient(
+                              colors: [
+                                //-----------------main body color-------------------------------------
+                                Color.fromARGB(255, 188, 234, 243),
+                                Color.fromARGB(255, 166, 209, 213)
+                                    .withOpacity(0.4)
+                              ],
+                              end: Alignment.topLeft,
+                              begin: Alignment.bottomRight),
+                          color: Colors.white),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.1,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white),
+                                      color: Color.fromARGB(255, 232, 239, 110)
+                                          .withOpacity(0.6),
+                                      borderRadius: BorderRadius.circular(20)
+                                      // gradient: LinearGradient(colors: [])
+                                      ),
+                                  child: ListTile(
+                                    horizontalTitleGap: 2,
+                                    leading: Container(
+                                      height: 15,
+                                      width: 15,
+                                      child: PieChart(PieChartData(
+                                          centerSpaceRadius: 20,
+                                          sections: [
+                                            PieChartSectionData(
+                                                title: " ",
+                                                radius: 10,
+                                                value: 70,
+                                                color: Colors.greenAccent),
+                                            PieChartSectionData(
+                                                title: "",
+                                                radius: 10,
+                                                value: 30,
+                                                // badgePositionPercentageOffset: 0.2,
+                                                color: Colors.transparent)
+                                          ])),
+                                    ).pLTRB(
+                                        MediaQuery.of(context).size.width *
+                                            0.05,
+                                        MediaQuery.of(context).size.width *
+                                            0.05,
+                                        MediaQuery.of(context).size.width * 0.4,
+                                        0),
+                                    title: Container(
+                                      alignment: Alignment.center,
+                                      height: 500,
+                                      width: 100,
+                                      child: Column(
+                                        children: [
+                                          GradientText(
+                                            "Goal",
+                                            textScaleFactor: 1.5,
+                                            colors: [
+                                              Colors.deepOrange,
+                                              Colors.deepPurple
+                                            ],
+                                            style: GoogleFonts.dancingScript(),
+                                          ),
+                                          // .text.make(),
+                                          GradientText(
+                                            "Current",
+                                            textScaleFactor: 1.5,
+                                            colors: [
+                                              Colors.deepOrange,
+                                              Colors.deepPurple
+                                            ],
+                                            style: GoogleFonts.dancingScript(),
+                                          ),
+                                        ],
+                                      ).p(10),
                                     ),
-                                child: ListTile(
-                                  horizontalTitleGap: 2,
-                                  leading: Container(
-                                    height: 15,
-                                    width: 15,
-                                    child: PieChart(PieChartData(
-                                        centerSpaceRadius: 20,
-                                        sections: [
-                                          PieChartSectionData(
-                                              title: " ",
-                                              radius: 10,
-                                              value: 70,
-                                              // badgeWidget: "yes".text.make(),
-                                              // badgePositionPercentageOffset: 0.6,
-                                              color: Colors.greenAccent),
-                                          PieChartSectionData(
-                                              title: "",
-                                              radius: 10,
-                                              value: 30,
-                                              // badgePositionPercentageOffset: 0.2,
-                                              color: Colors.transparent)
-                                        ])),
-                                  ).pLTRB(
-                                      MediaQuery.of(context).size.width * 0.05,
-                                      MediaQuery.of(context).size.width * 0.05,
-                                      MediaQuery.of(context).size.width * 0.4,
-                                      0),
-                                  title: Container(
-                                    alignment: Alignment.center,
-                                    height: 500,
-                                    width: 100,
-                                    child: Column(
-                                      children: [
-                                        GradientText(
-                                          "Goal",
-                                          textScaleFactor: 1.5,
-                                          colors: [
-                                            Colors.deepOrange,
-                                            Colors.deepPurple
-                                          ],
-                                          style: GoogleFonts.dancingScript(),
-                                        ),
-                                        // .text.make(),
-                                        GradientText(
-                                          "Current",
-                                          textScaleFactor: 1.5,
-                                          colors: [
-                                            Colors.deepOrange,
-                                            Colors.deepPurple
-                                          ],
-                                          style: GoogleFonts.dancingScript(),
-                                        ),
-                                      ],
-                                    ).p(10),
                                   ),
                                 ),
                               ),
+                            ).p(10),
+                            //------------------------top attendance part----------------------------
+                            ///------------------------subjects------------------------------------
+                            ///
+                            ///
+
+                            Obx(
+                              () => ListView.builder(
+                                  physics: ScrollPhysics(),
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: l.sl.length,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          border:
+                                              Border.all(color: Colors.white),
+                                          gradient: LinearGradient(
+                                              colors: (l.sl[index].curr.value /
+                                                          l.sl[index].tot
+                                                              .value) >
+                                                      0.5
+                                                  ? [
+                                                      Color.fromARGB(255, 113,
+                                                              236, 142)
+                                                          .withOpacity(0.2),
+                                                      Color.fromARGB(255, 194,
+                                                              234, 206)
+                                                          .withOpacity(0.2),
+                                                    ]
+                                                  : [
+                                                      Color.fromARGB(
+                                                              255, 239, 105, 98)
+                                                          .withOpacity(0.2),
+                                                      Color.fromARGB(255, 240,
+                                                              193, 167)
+                                                          .withOpacity(0.2),
+                                                    ],
+                                              begin: Alignment.topRight,
+                                              end: Alignment.bottomLeft)),
+                                      child: ListTile(
+                                        onTap: () {
+                                          var x = l.classneeded(index);
+                                          Get.snackbar(
+                                              'classes needed to attend',
+                                              x.toString());
+                                        },
+                                        onLongPress: () {
+                                          RxInt t = l.sl[index].tot;
+                                          RxInt c = l.sl[index].curr;
+                                          Get.defaultDialog(
+                                              title: "Edit",
+                                              onConfirm: () {
+                                                l.sl[index].tot = t;
+                                                l.sl[index].curr = c;
+                                                setState(() {});
+                                              },
+                                              content: Column(
+                                                children: [
+                                                  TextField(
+                                                    decoration: InputDecoration(
+                                                        label: "Current"
+                                                            .text
+                                                            .make()),
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    onChanged: (v) {
+                                                      c = RxInt(int.parse(v));
+                                                    },
+                                                  ),
+                                                  TextField(
+                                                    decoration: InputDecoration(
+                                                        label: "Total"
+                                                            .text
+                                                            .make()),
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    onChanged: (v) {
+                                                      t = RxInt(int.parse(v));
+                                                    },
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      IconButton(
+                                                          icon: Icon(
+                                                            CupertinoIcons
+                                                                .restart,
+                                                            // size: 50,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    217,
+                                                                    164,
+                                                                    242),
+                                                          ),
+                                                          onPressed: () {
+                                                            l.reset(index);
+                                                          }),
+                                                      IconButton(
+                                                          icon: Icon(
+                                                            CupertinoIcons
+                                                                .bin_xmark,
+                                                            // size: 50,
+                                                            color:
+                                                                Colors.red[300],
+                                                          ),
+                                                          onPressed: () {
+                                                            l.delete(index);
+                                                          }),
+                                                    ],
+                                                  )
+                                                ],
+                                              ));
+                                        },
+                                        leading: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.2,
+                                          child: PieChart(PieChartData(
+                                              centerSpaceRadius: 20,
+                                              sections: [
+                                                PieChartSectionData(
+                                                    title: " ",
+                                                    radius: 10,
+                                                    value: l
+                                                        .sl[index].curr.value
+                                                        .toDouble(),
+
+                                                    ///----current value-------
+                                                    color: (l.sl[index].curr
+                                                                    .value /
+                                                                l.sl[index].tot
+                                                                    .value) >
+                                                            0.5
+                                                        ? Color.fromARGB(
+                                                            255, 88, 235, 130)
+                                                        : Colors.deepOrange),
+                                                PieChartSectionData(
+                                                    title: "",
+                                                    radius: 10,
+                                                    value: (l
+                                                            .sl[index].tot.value
+                                                            .toDouble() -
+                                                        l.sl[index].curr.value
+                                                            .toDouble()), ////------------(100-current value)---------------
+                                                    color: Colors.transparent)
+                                              ])),
+                                        ),
+                                        title: GlowText(
+                                          glowColor: (l.sl[index].curr.value /
+                                                      l.sl[index].tot.value) >
+                                                  0.5
+                                              ? Color.fromARGB(255, 3, 249, 72)
+                                              : Color.fromARGB(255, 247, 61, 5),
+                                          l.sl[index].name.capitalized,
+                                          textScaleFactor: 2,
+                                          style: GoogleFonts.hahmlet(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        // title: Text(
+                                        //   l.sl[index].name.capitalized,
+                                        //   textScaleFactor: 2,
+                                        //   style: GoogleFonts.hahmlet(
+                                        //       fontWeight: FontWeight.w400),
+                                        // ),
+                                        subtitle: SizedBox(
+                                          height: 50,
+                                          child: Row(
+                                            children: [
+                                              IconButton(
+                                                  onPressed: () {
+                                                    //-----------increase curr---------
+                                                    l.inccurrent(index);
+                                                    l.sl[index].tot.value++;
+                                                    setState(() {});
+                                                    print(l.sl[index].curr);
+                                                  },
+                                                  icon: Icon(
+                                                    CupertinoIcons.check_mark,
+                                                    color:
+                                                        Colors.greenAccent[900],
+                                                  )),
+                                              '/'
+                                                  .text
+                                                  .headline5(context)
+                                                  .make(),
+                                              IconButton(
+                                                  onPressed: () {
+                                                    setState(() {});
+                                                    //-----------increase tot---------
+                                                    l.sl[index].tot.value++;
+                                                  },
+                                                  icon: Icon(
+                                                    CupertinoIcons.xmark,
+                                                    color: Colors.red[900],
+                                                  )),
+                                            ],
+                                          ).pLTRB(
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0,
+                                              0,
+                                              0,
+                                              0),
+                                        ),
+                                        trailing: SizedBox(
+                                          width: 100,
+                                          height: 50,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                '${l.sl[index].curr.value}/${l.sl[index].tot.value}',
+                                                textScaleFactor: 1.5,
+                                                style: GoogleFonts.sacramento(),
+                                              ).p(5),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ).p(10);
+                                  }),
                             ),
-                          ).p(10),
-                          //------------------------top attendance part----------------------------
-                          ///------------------------subjects------------------------------------
-                          ///
-                          ///
 
-                          Obx(
-                            () => ListView.builder(
-                                physics: ScrollPhysics(),
-                                shrinkWrap: true,
-                                scrollDirection: Axis.vertical,
-                                itemCount: l.sl.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(color: Colors.white),
-                                        gradient: LinearGradient(
-                                            colors: (l.sl[index].curr.value /
-                                                        l.sl[index].tot.value) >
-                                                    0.5
-                                                ? [
-                                                    Color.fromARGB(
-                                                        255, 167, 209, 240),
-                                                    Color.fromARGB(
-                                                        255, 178, 214, 238)
-                                                  ]
-                                                : [
-                                                    Color.fromARGB(
-                                                        255, 240, 193, 167),
-                                                    Color.fromARGB(
-                                                        255, 239, 105, 98)
-                                                  ],
-                                            begin: Alignment.topRight,
-                                            end: Alignment.bottomLeft)),
-                                    child: ListTile(
-                                      onLongPress: () {
-                                        RxInt t = l.sl[index].tot;
-                                        RxInt c = l.sl[index].curr;
-                                        Get.defaultDialog(
-                                            onConfirm: () {
-                                              l.sl[index].tot = t;
-                                              l.sl[index].curr = c;
-                                              setState(() {});
-                                            },
-                                            content: Column(
-                                              children: [
-                                                TextField(
-                                                  decoration: InputDecoration(
-                                                      label: "Current"
-                                                          .text
-                                                          .make()),
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  onChanged: (v) {
-                                                    c = RxInt(int.parse(v));
-                                                  },
-                                                ),
-                                                TextField(
-                                                  decoration: InputDecoration(
-                                                      label:
-                                                          "Total".text.make()),
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  onChanged: (v) {
-                                                    t = RxInt(int.parse(v));
-                                                  },
-                                                ),
-                                              ],
-                                            ));
-                                      },
-                                      leading: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.2,
-                                        child: PieChart(PieChartData(
-                                            centerSpaceRadius: 20,
-                                            sections: [
-                                              PieChartSectionData(
-                                                  title: " ",
-                                                  radius: 10,
-                                                  value: l.sl[index].curr.value
-                                                      .toDouble(),
+                            ///-----------------------------------------------
+                            // Container(
+                            //   decoration: BoxDecoration(
+                            //       borderRadius: BorderRadius.circular(20),
+                            //       border: Border.all(color: Colors.white),
+                            //       gradient: LinearGradient(
+                            //           colors: [
+                            //             Color.fromARGB(255, 172, 203, 227),
+                            //             Color.fromARGB(255, 224, 217, 243)
+                            //           ],
+                            //           begin: Alignment.topLeft,
+                            //           end: Alignment.bottomRight)),
+                            //   child: ListTile(
+                            //     leading: Container(
+                            //       width: MediaQuery.of(context).size.width * 0.2,
+                            //       child: PieChart(PieChartData(
+                            //           centerSpaceRadius: 20,
+                            //           sections: [
+                            //             PieChartSectionData(
+                            //                 title: " ",
+                            //                 radius: 10,
+                            //                 value: 70,
 
-                                                  ///----current value-------
-                                                  color:
-                                                      (l.sl[index].curr.value /
-                                                                  l
-                                                                      .sl[index]
-                                                                      .tot
-                                                                      .value) >
-                                                              0.5
-                                                          ? Color.fromARGB(
-                                                              255, 88, 235, 130)
-                                                          : Colors.deepOrange),
-                                              PieChartSectionData(
-                                                  title: "",
-                                                  radius: 10,
-                                                  value: (l.sl[index].tot.value
-                                                          .toDouble() -
-                                                      l.sl[index].curr.value
-                                                          .toDouble()), ////------------(100-current value)---------------
-                                                  color: Colors.transparent)
-                                            ])),
-                                      ),
-                                      title: Text(
-                                        l.sl[index].name.capitalized,
-                                        textScaleFactor: 2,
-                                        style: GoogleFonts.sacramento(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      subtitle: SizedBox(
-                                        height: 50,
-                                        child: Row(
-                                          children: [
-                                            IconButton(
-                                                onPressed: () {
-                                                  //-----------increase curr---------
-                                                  l.inccurrent(index);
-                                                  l.sl[index].tot.value++;
-                                                  setState(() {});
-                                                  print(l.sl[index].curr);
-                                                },
-                                                icon: Icon(
-                                                    CupertinoIcons.check_mark)),
-                                            '/'.text.headline5(context).make(),
-                                            IconButton(
-                                                onPressed: () {
-                                                  setState(() {});
-                                                  //-----------increase tot---------
-                                                  l.sl[index].tot.value++;
-                                                },
-                                                icon:
-                                                    Icon(CupertinoIcons.xmark)),
-                                          ],
-                                        ).pLTRB(
-                                            MediaQuery.of(context).size.width *
-                                                0,
-                                            0,
-                                            0,
-                                            0),
-                                      ),
-                                      trailing: SizedBox(
-                                        width: 100,
-                                        height: 50,
-                                        child: Text(
-                                          '${l.sl[index].curr.value}/${l.sl[index].tot.value}',
-                                          textScaleFactor: 1.5,
-                                          style: GoogleFonts.sacramento(),
-                                        ).p(10),
-                                      ),
-                                    ),
-                                  ).p(10);
-                                }),
-                          ),
-
-                          ///-----------------------------------------------
-                          // Container(
-                          //   decoration: BoxDecoration(
-                          //       borderRadius: BorderRadius.circular(20),
-                          //       border: Border.all(color: Colors.white),
-                          //       gradient: LinearGradient(
-                          //           colors: [
-                          //             Color.fromARGB(255, 172, 203, 227),
-                          //             Color.fromARGB(255, 224, 217, 243)
-                          //           ],
-                          //           begin: Alignment.topLeft,
-                          //           end: Alignment.bottomRight)),
-                          //   child: ListTile(
-                          //     leading: Container(
-                          //       width: MediaQuery.of(context).size.width * 0.2,
-                          //       child: PieChart(PieChartData(
-                          //           centerSpaceRadius: 20,
-                          //           sections: [
-                          //             PieChartSectionData(
-                          //                 title: " ",
-                          //                 radius: 10,
-                          //                 value: 70,
-
-                          //                 ///----current value-------
-                          //                 color: Colors.greenAccent),
-                          //             PieChartSectionData(
-                          //                 title: "",
-                          //                 radius: 10,
-                          //                 value:
-                          //                     30, ////------------(100-current value)---------------
-                          //                 color: Colors.transparent)
-                          //           ])),
-                          //     ),
-                          //     title: Text(
-                          //       'Subject',
-                          //       textScaleFactor: 2,
-                          //       style: GoogleFonts.sacramento(),
-                          //     ),
-                          //     subtitle: SizedBox(
-                          //       height: 50,
-                          //       child: Row(
-                          //         children: [
-                          //           IconButton(
-                          //               onPressed: () {
-                          //                 //-----------increase curr---------
-                          //               },
-                          //               icon: Icon(CupertinoIcons.check_mark)),
-                          //           '/'.text.headline5(context).make(),
-                          //           IconButton(
-                          //               onPressed: () {
-                          //                 //-----------increase tot---------
-                          //               },
-                          //               icon: Icon(CupertinoIcons.xmark)),
-                          //         ],
-                          //       ).pLTRB(MediaQuery.of(context).size.width * 0, 0,
-                          //           0, 0),
-                          //     ),
-                          //     trailing: SizedBox(
-                          //       width: 100,
-                          //       height: 50,
-                          //       child: Text(
-                          //         'curr/tot',
-                          //         textScaleFactor: 2,
-                          //         style: GoogleFonts.sacramento(),
-                          //       ).p(10),
-                          //     ),
-                          //   ),
-                          // ).p(10)
-                        ],
+                            //                 ///----current value-------
+                            //                 color: Colors.greenAccent),
+                            //             PieChartSectionData(
+                            //                 title: "",
+                            //                 radius: 10,
+                            //                 value:
+                            //                     30, ////------------(100-current value)---------------
+                            //                 color: Colors.transparent)
+                            //           ])),
+                            //     ),
+                            //     title: Text(
+                            //       'Subject',
+                            //       textScaleFactor: 2,
+                            //       style: GoogleFonts.sacramento(),
+                            //     ),
+                            //     subtitle: SizedBox(
+                            //       height: 50,
+                            //       child: Row(
+                            //         children: [
+                            //           IconButton(
+                            //               onPressed: () {
+                            //                 //-----------increase curr---------
+                            //               },
+                            //               icon: Icon(CupertinoIcons.check_mark)),
+                            //           '/'.text.headline5(context).make(),
+                            //           IconButton(
+                            //               onPressed: () {
+                            //                 //-----------increase tot---------
+                            //               },
+                            //               icon: Icon(CupertinoIcons.xmark)),
+                            //         ],
+                            //       ).pLTRB(MediaQuery.of(context).size.width * 0, 0,
+                            //           0, 0),
+                            //     ),
+                            //     trailing: SizedBox(
+                            //       width: 100,
+                            //       height: 50,
+                            //       child: Text(
+                            //         'curr/tot',
+                            //         textScaleFactor: 2,
+                            //         style: GoogleFonts.sacramento(),
+                            //       ).p(10),
+                            //     ),
+                            //   ),
+                            // ).p(10)
+                          ],
+                        ),
                       ),
-                    ),
-                  ).pLTRB(0, MediaQuery.of(context).size.height * 0.25, 0, 0)
-                ],
-              ),
-            ],
+                    ).pLTRB(0, MediaQuery.of(context).size.height * 0.25, 0, 0)
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
