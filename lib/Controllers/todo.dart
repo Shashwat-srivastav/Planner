@@ -2,6 +2,7 @@
 // import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 class Todo extends GetxController {
   RxList<String> list = <String>[].obs;
@@ -46,8 +47,35 @@ class Toggle extends GetxController {
   }
 }
 
+// class attendance {
+//   RxList<Subject> sl = <Subject>[].obs;
+//   attendance()
+//   {
+
+//   }
+// }
+
 class Subjects extends GetxController {
   RxList<Subject> sl = <Subject>[].obs;
+
+  final _myBox = Hive.box('attend');
+
+  first() {
+    Subject x = new Subject(
+      'subject',
+      RxInt(0),
+      RxInt(0),
+    );
+    sl.add(x);
+  }
+
+  loadData() {
+    sl = (_myBox.get('Attend'));
+  }
+
+  updateData() {
+    _myBox.put("Attend", sl);
+  }
 
   addSubject(name, curr, tot) {
     Subject x = new Subject(name, curr, tot);
