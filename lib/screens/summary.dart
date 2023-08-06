@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:planner/screens/attendance.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -53,6 +54,17 @@ class _SummaryPageState extends State<SummaryPage> {
 
   //ab58Ejn-TmO5zrHqws3G1eAJU27bs33QaCP5XV1q84A  //ak
   //yosoh5jSVpFAPH2BZ5gf6zm7Nn_YywfUoQVXO7Lg39Q  //sk
+  final _mybox = Hive.box('attend');
+  @override
+  initState() {
+    if (_mybox.get("TODO") == null) {
+      task.list.add(' ');
+      // task.l.add(' ');
+    } else {
+      task.loadTask();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,8 +158,8 @@ class _SummaryPageState extends State<SummaryPage> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   gradient: LinearGradient(colors: [
-                    Color.fromARGB(255, 238, 246, 217),
-                    Color.fromARGB(255, 215, 232, 215)
+                    Color.fromARGB(255, 178, 222, 232).withOpacity(0.3),
+                    Color.fromARGB(255, 165, 167, 165)
                   ], end: Alignment.topLeft, begin: Alignment.bottomRight),
                   color: Colors.white),
               child: Column(children: [
@@ -295,9 +307,9 @@ class _SummaryPageState extends State<SummaryPage> {
                               ),
                               gradient: LinearGradient(
                                   colors: [
-                                    Color.fromARGB(255, 231, 199, 189),
-                                    Color.fromARGB(255, 196, 176, 231),
-                                    Color.fromARGB(255, 168, 231, 224)
+                                    Color.fromARGB(255, 169, 168, 168),
+                                    Color.fromARGB(255, 231, 230, 234),
+                                    Color.fromARGB(255, 185, 206, 204)
                                   ],
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomRight),
@@ -367,6 +379,8 @@ class _SummaryPageState extends State<SummaryPage> {
                               ),
                               onConfirm: () {
                                 task.add(t);
+                                task.l.add(t);
+                                task.updateTodoList();
                               });
                         },
                         icon: Icon(CupertinoIcons.add_circled))
@@ -399,11 +413,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                               gradient: LinearGradient(
                                                   colors: [
                                                     Color.fromARGB(
-                                                        255, 229, 191, 179),
+                                                        255, 169, 168, 168),
                                                     Color.fromARGB(
-                                                        255, 183, 154, 233),
+                                                        255, 231, 230, 234),
                                                     Color.fromARGB(
-                                                        255, 168, 231, 224)
+                                                        255, 185, 206, 204)
                                                   ],
                                                   begin: Alignment.topCenter,
                                                   end: Alignment.bottomLeft),
@@ -415,7 +429,9 @@ class _SummaryPageState extends State<SummaryPage> {
                                             onTap: () {
                                               task.list
                                                   .remove(task.list[index]);
+                                              task.l.remove(task.list[index]);
                                               task.list.refresh();
+                                              task.updateTodoList();
                                             },
                                             title: GradientText(
                                               task.list[index],

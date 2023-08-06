@@ -13,6 +13,8 @@ import 'package:planner/Controllers/todo.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../Controllers/Subject.dart';
+
 class AttendancePage extends StatefulWidget {
   const AttendancePage({super.key});
 
@@ -21,19 +23,20 @@ class AttendancePage extends StatefulWidget {
 }
 
 class _AttendancePageState extends State<AttendancePage> {
-  final Subjects l = Get.put(Subjects());
+  final Subjects l = new Subjects();
   final _myBox = Hive.box('attend');
 
-  // @override
-  // void initState() {
-  //   // l.loadData();
-  //   if (_myBox.get('Attend') == null) {
-  //     l.sl.add(new Subject('hello', RxInt(0), RxInt(0)));
-  //   } else {
-  //     l.loadData();
-  //   }
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    // l.loadData();
+    if (_myBox.get('Attend') == null) {
+      // l.sl.add(new Subject('hello', RxInt(0), RxInt(0)));
+      l.first();
+    } else {
+      l.loadData();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +46,9 @@ class _AttendancePageState extends State<AttendancePage> {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            var name = '';
-            RxInt c = RxInt(0);
-            RxInt t = RxInt(0);
+            var name = ' ';
+            int c = (1);
+            int t = (1);
             showDialog(
                 context: context,
                 builder: (context) {
@@ -108,7 +111,7 @@ class _AttendancePageState extends State<AttendancePage> {
                                   )),
                               keyboardType: TextInputType.number,
                               onChanged: (v) {
-                                c = RxInt(int.parse(v));
+                                c = (int.parse(v));
                               },
                             ),
                             TextField(
@@ -129,13 +132,17 @@ class _AttendancePageState extends State<AttendancePage> {
                                   )),
                               keyboardType: TextInputType.number,
                               onChanged: (v) {
-                                t = RxInt(int.parse(v));
+                                t = (int.parse(v));
                               },
                             ),
                             TextButton(
                                 onPressed: () {
-                                  var x = new Subject(name, c, t);
+                                  var x =
+                                      new Subject(name: name, curr: c, tot: t);
                                   l.sl.add(x);
+                                  setState(() {});
+                                  l.updateData();
+                                  Get.back();
                                 },
                                 child: "ADD"
                                     .text
@@ -229,7 +236,7 @@ class _AttendancePageState extends State<AttendancePage> {
 
                     ///---------------------------------------------main body of the page--------------------------------
                     Container(
-                      height: MediaQuery.of(context).size.height * 2,
+                      height: MediaQuery.of(context).size.height * 0.85,
                       width: double.maxFinite,
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.white, width: 2),
@@ -253,508 +260,508 @@ class _AttendancePageState extends State<AttendancePage> {
                             ///
                             ///
 
-                            Obx(
-                              () => ListView.builder(
-                                  physics: ScrollPhysics(),
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: l.sl.length,
-                                  itemBuilder: (context, index) {
-                                    return Stack(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              border: Border.all(
-                                                  color: Colors.white),
-                                              gradient: LinearGradient(
-                                                  colors: (l.sl[index].curr
-                                                                  .value /
-                                                              l.sl[index].tot
-                                                                  .value) >
-                                                          0.5
-                                                      ? [
-                                                          Color.fromARGB(255,
-                                                                  85, 231, 119)
-                                                              .withOpacity(0.2),
-                                                          Color.fromARGB(255,
-                                                                  194, 234, 206)
-                                                              .withOpacity(0.2),
-                                                        ]
-                                                      : [
-                                                          Color.fromARGB(255,
-                                                                  243, 68, 59)
-                                                              .withOpacity(0.2),
-                                                          Color.fromARGB(255,
-                                                                  240, 193, 167)
-                                                              .withOpacity(0.2),
-                                                        ],
-                                                  begin: Alignment.topRight,
-                                                  end: Alignment.bottomLeft)),
-                                          child: ListTile(
-                                            onTap: () {
-                                              var x = l.classneeded(index);
-                                              Get.snackbar(
-                                                  'classes needed to attend',
-                                                  x.toString());
-                                            },
-                                            onLongPress: () {
-                                              RxInt t = l.sl[index].tot;
-                                              RxInt c = l.sl[index].curr;
+                            ListView.builder(
+                                physics: ScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: l.sl.length,
+                                itemBuilder: (context, index) {
+                                  return Stack(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            border:
+                                                Border.all(color: Colors.white),
+                                            gradient: LinearGradient(
+                                                colors: (l.sl[index].curr /
+                                                            l.sl[index].tot) >
+                                                        0.5
+                                                    ? [
+                                                        Color.fromARGB(255, 85,
+                                                                231, 119)
+                                                            .withOpacity(0.2),
+                                                        Color.fromARGB(255, 194,
+                                                                234, 206)
+                                                            .withOpacity(0.2),
+                                                      ]
+                                                    : [
+                                                        Color.fromARGB(255, 243,
+                                                                68, 59)
+                                                            .withOpacity(0.2),
+                                                        Color.fromARGB(255, 240,
+                                                                193, 167)
+                                                            .withOpacity(0.2),
+                                                      ],
+                                                begin: Alignment.topRight,
+                                                end: Alignment.bottomLeft)),
+                                        child: ListTile(
+                                          // onTap: () {
+                                          //   var x = l.classneeded(index);
+                                          //   Get.snackbar(
+                                          //       'classes needed to attend',
+                                          //       x.toString());
+                                          // },
+                                          onTap: () {
+                                            int t = l.sl[index].tot;
+                                            int c = l.sl[index].curr;
 
 //------------------------------------------------
 
-                                              showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      insetPadding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 100,
-                                                              horizontal: 100),
-                                                      contentPadding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 10,
-                                                              vertical: 10),
-                                                      scrollable: true,
-                                                      shadowColor:
-                                                          Colors.blueGrey[300],
-                                                      backgroundColor:
-                                                          Colors.grey[600],
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              side: BorderSide(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  width: 2),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20)),
-                                                      clipBehavior:
-                                                          Clip.antiAlias,
-                                                      content: Container(
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.28,
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.8,
-                                                        color:
-                                                            Colors.transparent,
-                                                        child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceEvenly,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              TextField(
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                        focusedBorder:
-                                                                            OutlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(color: Colors.white),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(20),
-                                                                        ),
-                                                                        enabledBorder:
-                                                                            OutlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(color: Colors.white),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(20),
-                                                                        ),
-                                                                        filled:
-                                                                            true,
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            140,
-                                                                            141,
-                                                                            142),
-                                                                        label: "Current"
-                                                                            .text
-                                                                            .white
-                                                                            .make(),
-                                                                        border:
-                                                                            OutlineInputBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(20),
-                                                                        )),
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .number,
-                                                                onChanged: (v) {
-                                                                  c = RxInt(
-                                                                      int.parse(
-                                                                          v));
-                                                                },
-                                                              ),
-                                                              TextField(
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                        focusedBorder:
-                                                                            OutlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(color: Colors.white),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(20),
-                                                                        ),
-                                                                        enabledBorder:
-                                                                            OutlineInputBorder(
-                                                                          borderSide:
-                                                                              BorderSide(color: Colors.white),
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(20),
-                                                                        ),
-                                                                        filled:
-                                                                            true,
-                                                                        fillColor: Color.fromARGB(
-                                                                            255,
-                                                                            140,
-                                                                            141,
-                                                                            142),
-                                                                        label: "Total"
-                                                                            .text
-                                                                            .white
-                                                                            .make(),
-                                                                        border:
-                                                                            OutlineInputBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(20),
-                                                                        )),
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .number,
-                                                                onChanged: (v) {
-                                                                  t = RxInt(
-                                                                      int.parse(
-                                                                          v));
-                                                                },
-                                                              ),
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceEvenly,
-                                                                children: [
-                                                                  IconButton(
-                                                                      icon:
-                                                                          Icon(
-                                                                        CupertinoIcons
-                                                                            .restart,
-                                                                        // size: 50,
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            217,
-                                                                            164,
-                                                                            242),
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    insetPadding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 100,
+                                                            horizontal: 100),
+                                                    contentPadding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10,
+                                                            vertical: 10),
+                                                    scrollable: true,
+                                                    shadowColor:
+                                                        Colors.blueGrey[300],
+                                                    backgroundColor:
+                                                        Colors.grey[600],
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            side: BorderSide(
+                                                                color: Colors
+                                                                    .white,
+                                                                width: 2),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    content: Container(
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.28,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.8,
+                                                      color: Colors.transparent,
+                                                      child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            TextField(
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                      focusedBorder:
+                                                                          OutlineInputBorder(
+                                                                        borderSide:
+                                                                            BorderSide(color: Colors.white),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20),
                                                                       ),
-                                                                      onPressed:
-                                                                          () {
-                                                                        l.reset(
-                                                                            index);
-                                                                        l.updateData();
-                                                                      }),
-                                                                  IconButton(
-                                                                      icon:
-                                                                          Icon(
-                                                                        CupertinoIcons
-                                                                            .bin_xmark,
-                                                                        // size: 50,
-                                                                        color: Colors
-                                                                            .red[900],
+                                                                      enabledBorder:
+                                                                          OutlineInputBorder(
+                                                                        borderSide:
+                                                                            BorderSide(color: Colors.white),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20),
                                                                       ),
-                                                                      onPressed:
-                                                                          () {
-                                                                        l.delete(
-                                                                            index);
-                                                                        l.updateData();
-                                                                      }),
-                                                                ],
-                                                              ),
-                                                              TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    l.sl[index]
-                                                                        .curr = c;
-                                                                    l.sl[index]
-                                                                        .tot = t;
-                                                                    setState(
-                                                                        () {});
-                                                                  },
-                                                                  child: "Change"
-                                                                      .text
-                                                                      .red800
-                                                                      .headline5(
-                                                                          context)
-                                                                      .make())
-                                                            ]),
-                                                      ),
-                                                    );
-                                                  });
+                                                                      filled:
+                                                                          true,
+                                                                      fillColor: Color.fromARGB(
+                                                                          255,
+                                                                          140,
+                                                                          141,
+                                                                          142),
+                                                                      label: "Current"
+                                                                          .text
+                                                                          .white
+                                                                          .make(),
+                                                                      border:
+                                                                          OutlineInputBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20),
+                                                                      )),
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .number,
+                                                              onChanged: (v) {
+                                                                c = (int.parse(
+                                                                    v));
+                                                              },
+                                                            ),
+                                                            TextField(
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                      focusedBorder:
+                                                                          OutlineInputBorder(
+                                                                        borderSide:
+                                                                            BorderSide(color: Colors.white),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20),
+                                                                      ),
+                                                                      enabledBorder:
+                                                                          OutlineInputBorder(
+                                                                        borderSide:
+                                                                            BorderSide(color: Colors.white),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20),
+                                                                      ),
+                                                                      filled:
+                                                                          true,
+                                                                      fillColor: Color.fromARGB(
+                                                                          255,
+                                                                          140,
+                                                                          141,
+                                                                          142),
+                                                                      label: "Total"
+                                                                          .text
+                                                                          .white
+                                                                          .make(),
+                                                                      border:
+                                                                          OutlineInputBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20),
+                                                                      )),
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .number,
+                                                              onChanged: (v) {
+                                                                t = (int.parse(
+                                                                    v));
+                                                              },
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: [
+                                                                IconButton(
+                                                                    icon: Icon(
+                                                                      CupertinoIcons
+                                                                          .settings_solid,
+                                                                      // size: 50,
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          217,
+                                                                          164,
+                                                                          242),
+                                                                    ),
+                                                                    onPressed:
+                                                                        () {
+                                                                      l.reset(
+                                                                          index);
+                                                                      l.updateData();
+                                                                      setState(
+                                                                          () {});
+                                                                      Get.back();
+                                                                    }),
+                                                                IconButton(
+                                                                    icon: Icon(
+                                                                      CupertinoIcons
+                                                                          .bin_xmark,
+                                                                      // size: 50,
+                                                                      color: Colors
+                                                                              .red[
+                                                                          900],
+                                                                    ),
+                                                                    onPressed:
+                                                                        () {
+                                                                      l.delete(
+                                                                          index);
+                                                                      l.updateData();
+                                                                      setState(
+                                                                          () {});
+                                                                      Get.back();
+                                                                    }),
+                                                                IconButton(
+                                                                    icon: Icon(
+                                                                      CupertinoIcons
+                                                                          .arrow_counterclockwise_circle,
+                                                                      // size: 50,
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          37,
+                                                                          177,
+                                                                          220),
+                                                                    ),
+                                                                    onPressed:
+                                                                        () {
+                                                                      l.undo(
+                                                                          index);
+                                                                      l.updateData();
+                                                                      setState(
+                                                                          () {});
+                                                                      Get.back();
+                                                                    }),
+                                                              ],
+                                                            ),
+                                                            TextButton(
+                                                                onPressed: () {
+                                                                  l.sl[index]
+                                                                      .curr = c;
+                                                                  l.sl[index]
+                                                                      .tot = t;
+                                                                  setState(
+                                                                      () {});
+                                                                  l.updateData();
+                                                                  Get.back();
+                                                                },
+                                                                child: "Change"
+                                                                    .text
+                                                                    .red800
+                                                                    .headline5(
+                                                                        context)
+                                                                    .make())
+                                                          ]),
+                                                    ),
+                                                  );
+                                                });
 //-----------------------------------------------
 
-                                              // Get.defaultDialog(
-                                              //     title: "Edit",
-                                              //     onConfirm: () {
-                                              //       l.sl[index].tot = t;
-                                              //       l.sl[index].curr = c;
-                                              //       l.updateData();
-                                              //       setState(() {});
-                                              //     },
-                                              //     content: Column(
-                                              //       children: [
-                                              //         TextField(
-                                              //           decoration: InputDecoration(
-                                              //               label: "Current"
-                                              //                   .text
-                                              //                   .make()),
-                                              //           keyboardType:
-                                              //               TextInputType.number,
-                                              //           onChanged: (v) {
-                                              //             c = RxInt(int.parse(v));
-                                              //           },
-                                              //         ),
-                                              //         TextField(
-                                              //           decoration: InputDecoration(
-                                              //               label: "Total"
-                                              //                   .text
-                                              //                   .make()),
-                                              //           keyboardType:
-                                              //               TextInputType.number,
-                                              //           onChanged: (v) {
-                                              //             t = RxInt(int.parse(v));
-                                              //           },
-                                              //         ),
-                                              //         Row(
-                                              //           children: [
-                                              //             IconButton(
-                                              //                 icon: Icon(
-                                              //                   CupertinoIcons
-                                              //                       .restart,
-                                              //                   // size: 50,
-                                              //                   color:
-                                              //                       Color.fromARGB(
-                                              //                           255,
-                                              //                           217,
-                                              //                           164,
-                                              //                           242),
-                                              //                 ),
-                                              //                 onPressed: () {
-                                              //                   l.reset(index);
-                                              //                   l.updateData();
-                                              //                 }),
-                                              //             IconButton(
-                                              //                 icon: Icon(
-                                              //                   CupertinoIcons
-                                              //                       .bin_xmark,
-                                              //                   // size: 50,
-                                              //                   color:
-                                              //                       Colors.red[300],
-                                              //                 ),
-                                              //                 onPressed: () {
-                                              //                   l.delete(index);
-                                              //                   l.updateData();
-                                              //                 }),
-                                              //           ],
-                                              //         )
-                                              //       ],
-                                              //     ));
+                                            // Get.defaultDialog(
+                                            //     title: "Edit",
+                                            //     onConfirm: () {
+                                            //       l.sl[index].tot = t;
+                                            //       l.sl[index].curr = c;
+                                            //       l.updateData();
+                                            //       setState(() {});
+                                            //     },
+                                            //     content: Column(
+                                            //       children: [
+                                            //         TextField(
+                                            //           decoration: InputDecoration(
+                                            //               label: "Current"
+                                            //                   .text
+                                            //                   .make()),
+                                            //           keyboardType:
+                                            //               TextInputType.number,
+                                            //           onChanged: (v) {
+                                            //             c = RxInt(int.parse(v));
+                                            //           },
+                                            //         ),
+                                            //         TextField(
+                                            //           decoration: InputDecoration(
+                                            //               label: "Total"
+                                            //                   .text
+                                            //                   .make()),
+                                            //           keyboardType:
+                                            //               TextInputType.number,
+                                            //           onChanged: (v) {
+                                            //             t = RxInt(int.parse(v));
+                                            //           },
+                                            //         ),
+                                            //         Row(
+                                            //           children: [
+                                            //             IconButton(
+                                            //                 icon: Icon(
+                                            //                   CupertinoIcons
+                                            //                       .restart,
+                                            //                   // size: 50,
+                                            //                   color:
+                                            //                       Color.fromARGB(
+                                            //                           255,
+                                            //                           217,
+                                            //                           164,
+                                            //                           242),
+                                            //                 ),
+                                            //                 onPressed: () {
+                                            //                   l.reset(index);
+                                            //                   l.updateData();
+                                            //                 }),
+                                            //             IconButton(
+                                            //                 icon: Icon(
+                                            //                   CupertinoIcons
+                                            //                       .bin_xmark,
+                                            //                   // size: 50,
+                                            //                   color:
+                                            //                       Colors.red[300],
+                                            //                 ),
+                                            //                 onPressed: () {
+                                            //                   l.delete(index);
+                                            //                   l.updateData();
+                                            //                 }),
+                                            //           ],
+                                            //         )
+                                            //       ],
+                                            //     ));
 
-                                              //-----------------end--------------
-                                            },
-                                            leading: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.2,
-                                              child: PieChart(PieChartData(
-                                                  centerSpaceRadius: 20,
-                                                  sections: [
-                                                    PieChartSectionData(
-                                                        title: " ",
-                                                        radius: 10,
-                                                        value:
-                                                            l.sl[index].curr
-                                                                .value
-                                                                .toDouble(),
+                                            //-----------------end--------------
+                                          },
+                                          leading: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.2,
+                                            child: PieChart(PieChartData(
+                                                centerSpaceRadius: 20,
+                                                sections: [
+                                                  PieChartSectionData(
+                                                      title: " ",
+                                                      radius: 10,
+                                                      value: l.sl[index].curr
+                                                          .toDouble(),
 
-                                                        ///----current value-------
-                                                        color: (l.sl[index].curr
-                                                                        .value /
-                                                                    l
-                                                                        .sl[
-                                                                            index]
-                                                                        .tot
-                                                                        .value) >
-                                                                0.5
-                                                            ? Color.fromARGB(
-                                                                255,
-                                                                88,
-                                                                235,
-                                                                130)
-                                                            : Colors
-                                                                .deepOrange),
-                                                    PieChartSectionData(
-                                                        title: "",
-                                                        radius: 10,
-                                                        value: (l.sl[index].tot
-                                                                .value
-                                                                .toDouble() -
-                                                            l.sl[index].curr
-                                                                .value
-                                                                .toDouble()), ////------------(100-current value)---------------
-                                                        color:
-                                                            Colors.transparent)
-                                                  ])),
-                                            ),
-                                            title: GlowText(
-                                              glowColor:
-                                                  (l.sl[index].curr.value /
-                                                              l.sl[index].tot
-                                                                  .value) >
-                                                          0.5
-                                                      ? Color.fromARGB(
-                                                          255, 3, 249, 72)
-                                                      : Color.fromARGB(
-                                                          255, 247, 61, 5),
-                                              l.sl[index].name.capitalized,
-                                              textScaleFactor: 2,
-                                              style: GoogleFonts.hahmlet(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                            subtitle: SizedBox(
-                                              height: 50,
-                                              child: Row(
-                                                children: [
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        //-----------increase curr---------
-                                                        l.inccurrent(index);
-                                                        l.sl[index].tot.value++;
-                                                        setState(() {});
-                                                        l.updateData();
-
-                                                        print(l.sl[index].curr);
-                                                      },
-                                                      icon: Icon(
-                                                        CupertinoIcons
-                                                            .check_mark,
-                                                        color:
-                                                            Colors.green[900],
-                                                      )),
-                                                  '/'
-                                                      .text
-                                                      .headline5(context)
-                                                      .make(),
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        //-----------increase tot---------
-                                                        l.sl[index].tot.value++;
-                                                        setState(() {});
-                                                        l.updateData();
-                                                      },
-                                                      icon: Icon(
-                                                        CupertinoIcons.xmark,
-                                                        color: Colors.red[900],
-                                                      )),
-                                                ],
-                                              ).pLTRB(
-                                                  MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0,
-                                                  0,
-                                                  0,
-                                                  0),
-                                            ),
-                                            trailing: SizedBox(
-                                              width: 100,
-                                              height: 50,
-                                              child: Column(
-                                                children: [
-                                                  GlowText(
-                                                    '${l.sl[index].curr.value}/${l.sl[index].tot.value}',
-                                                    glowColor: Color.fromARGB(
-                                                        255, 45, 196, 213),
-                                                    textScaleFactor: 1.5,
-                                                    style:
-                                                        GoogleFonts.sacramento(
-                                                      color: Colors.white,
-                                                    ),
-                                                  ).p(5),
-                                                ],
-                                              ),
-                                            ),
+                                                      ///----current value-------
+                                                      color: (l.sl[index].curr /
+                                                                  l.sl[index]
+                                                                      .tot) >
+                                                              0.5
+                                                          ? Color.fromARGB(
+                                                              255, 88, 235, 130)
+                                                          : Colors.deepOrange),
+                                                  PieChartSectionData(
+                                                      title: "",
+                                                      radius: 10,
+                                                      value: (l.sl[index].tot
+                                                              .toDouble() -
+                                                          l.sl[index].curr
+                                                              .toDouble()), ////------------(100-current value)---------------
+                                                      color: Colors.transparent)
+                                                ])),
                                           ),
-                                        ).p(10),
-
-                                        //--------------------percentage--------------------------------
-                                        GlowText(
-                                          '${((l.sl[index].curr.value / l.sl[index].tot.value) * 100).round()} % ',
-                                          glowColor:
-                                              Color.fromARGB(255, 45, 196, 213),
-                                          textScaleFactor: 0.96,
-                                          style: GoogleFonts.sacramento(
-                                            color: Colors.white,
+                                          title: GlowText(
+                                            glowColor: (l.sl[index].curr /
+                                                        l.sl[index].tot) >
+                                                    0.5
+                                                ? Color.fromARGB(
+                                                    255, 193, 231, 204)
+                                                : Color.fromARGB(
+                                                    255, 234, 198, 188),
+                                            l.sl[index].name.capitalized,
+                                            textScaleFactor: 2,
+                                            style: GoogleFonts.hahmlet(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w400),
                                           ),
-                                        ).pLTRB(
-                                            MediaQuery.of(context).size.height *
-                                                0.062,
-                                            MediaQuery.of(context).size.height *
-                                                0.054,
-                                            0,
-                                            0),
+                                          subtitle: SizedBox(
+                                            height: 50,
+                                            child: Row(
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      //-----------increase curr---------
+                                                      l.inccurrent(index);
+                                                      l.sl[index].tot++;
+                                                      setState(() {});
+                                                      l.updateData();
 
-                                        //---------------------attend classes-------------
-                                        Container(
-                                                height: MediaQuery.of(context)
+                                                      print(l.sl[index].curr);
+                                                    },
+                                                    icon: Icon(
+                                                      CupertinoIcons.check_mark,
+                                                      color: Colors.green[900],
+                                                    )),
+                                                '/'
+                                                    .text
+                                                    .headline5(context)
+                                                    .make(),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      //-----------increase tot---------
+                                                      l.sl[index].tot++;
+                                                      setState(() {});
+                                                      l.updateData();
+                                                    },
+                                                    icon: Icon(
+                                                      CupertinoIcons.xmark,
+                                                      color: Colors.red[900],
+                                                    )),
+                                              ],
+                                            ).pLTRB(
+                                                MediaQuery.of(context)
                                                         .size
-                                                        .height *
-                                                    0.2,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    1.5,
-                                                child: GlowText(
-                                                  (l.sl[index].curr.value /
-                                                              l.sl[index].tot
-                                                                  .value) >
-                                                          0.5
-                                                      ? 'You have nice attendance'
-                                                      : 'You need to attend ${l.classneeded(index).toString()} classes',
-                                                  softWrap: true,
+                                                        .width *
+                                                    0,
+                                                0,
+                                                0,
+                                                0),
+                                          ),
+                                          trailing: SizedBox(
+                                            width: 100,
+                                            height: 50,
+                                            child: Column(
+                                              children: [
+                                                GlowText(
+                                                  '${l.sl[index].curr}/${l.sl[index].tot}',
                                                   glowColor: Color.fromARGB(
                                                       255, 45, 196, 213),
-                                                  textScaleFactor: 1.3,
+                                                  textScaleFactor: 1.5,
                                                   style: GoogleFonts.sacramento(
                                                     color: Colors.white,
                                                   ),
-                                                ))
-                                            .pLTRB(
-                                                MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.28,
-                                                MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.078,
-                                                0,
-                                                0),
-                                        //------------------------------------------
-                                      ],
-                                    );
-                                  }),
-                            ),
+                                                ).p(5),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ).p(10),
+
+                                      //--------------------percentage--------------------------------
+                                      GlowText(
+                                        '${((l.sl[index].curr / l.sl[index].tot) * 100).round()}% ',
+                                        glowColor:
+                                            Color.fromARGB(255, 45, 196, 213),
+                                        textScaleFactor: 0.96,
+                                        style: GoogleFonts.sacramento(
+                                          color: Colors.white,
+                                        ),
+                                      ).pLTRB(
+                                          MediaQuery.of(context).size.height *
+                                              0.062,
+                                          MediaQuery.of(context).size.height *
+                                              0.051,
+                                          0,
+                                          0),
+
+                                      //---------------------attend classes-------------
+                                      Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.05,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  1.3,
+                                              child: GlowText(
+                                                (l.sl[index].curr /
+                                                            l.sl[index].tot) >
+                                                        0.5
+                                                    ? 'You can leave ${l.classneeded(index).round().toString()} classes '
+                                                    : 'You need to attend ${l.classneeded(index).round().toString()} classes',
+                                                softWrap: true,
+                                                glowColor: Color.fromARGB(
+                                                    255, 45, 196, 213),
+                                                textScaleFactor: 1.1,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ))
+                                          .pLTRB(
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.26,
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.0715,
+                                              0,
+                                              0),
+                                      //------------------------------------------
+                                    ],
+                                  );
+                                }),
 
                             ///-----------------------------------------------
                             // Container(

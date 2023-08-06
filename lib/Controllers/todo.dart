@@ -4,8 +4,23 @@
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
+import 'Subject.dart';
+// import 'package:planner/Controllers/AttendanceList.dart';
+
 class Todo extends GetxController {
   RxList<String> list = <String>[].obs;
+  List<String> l = [];
+
+  final _myBOX = Hive.box('attend');
+
+  loadTask() {
+    l = _myBOX.get('TODO').cast<String>();
+    list = RxList(l);
+  }
+
+  updateTodoList() {
+    _myBOX.put("TODO", l);
+  }
 
   void add(String el) {
     list.add(el);
@@ -55,22 +70,20 @@ class Toggle extends GetxController {
 //   }
 // }
 
-class Subjects extends GetxController {
-  RxList<Subject> sl = <Subject>[].obs;
+class Subjects {
+  List<Subject> sl = <Subject>[];
 
   final _myBox = Hive.box('attend');
 
   first() {
-    Subject x = new Subject(
-      'subject',
-      RxInt(0),
-      RxInt(0),
-    );
+    // Subject x = new  Subject('subject', 0, 0);
+    Subject x = new Subject(name: 'subject', curr: 1, tot: 1);
     sl.add(x);
+    _myBox.put("Attend", sl);
   }
 
   loadData() {
-    sl = (_myBox.get('Attend'));
+    sl = (_myBox.get('Attend').cast<Subject>());
   }
 
   updateData() {
@@ -78,12 +91,17 @@ class Subjects extends GetxController {
   }
 
   addSubject(name, curr, tot) {
-    Subject x = new Subject(name, curr, tot);
+    Subject x = new Subject(name: name, curr: curr, tot: tot);
     sl.add(x);
   }
 
   inccurrent(i) {
-    sl[i].curr.value++;
+    sl[i].curr++;
+  }
+
+  undo(i) {
+    sl[i].curr--;
+    sl[i].tot--;
   }
 
   delete(i) {
@@ -91,15 +109,15 @@ class Subjects extends GetxController {
   }
 
   reset(i) {
-    sl[i].curr.value = 0;
-    sl[i].tot.value = 0;
+    sl[i].curr = 1;
+    sl[i].tot = 1;
   }
 
   classneeded(i) {
-    var num = sl[i].curr.value - (0.5 * sl[i].tot.value);
+    var num = sl[i].curr - (0.5 * sl[i].tot);
     var det = (0.5);
 
-    return num / det > 0 ? 'good' : (num / det) * -1 + 1;
+    return num / det > 0 ? (num / det) : (num / det) * -1 + 1;
   }
 
   removeSubject(i) {
@@ -107,20 +125,13 @@ class Subjects extends GetxController {
   }
 }
 
-class Subject extends GetxController {
-  late String name;
-  // String sum;
-  late RxInt curr;
-  late RxInt tot;
-  Subject(
-    name,
-    // this.sum,
-    curr,
-    tot,
-  ) {
-    this.name = name;
-    // this.sum = sum;
-    this.curr = curr;
-    this.tot = tot;
-  }
-}
+// class Subject {
+//   String name = '';
+
+//   int curr ;
+
+//   int tot = 1;
+
+//   Subject();
+// }
+
